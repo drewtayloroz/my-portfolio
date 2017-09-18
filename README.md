@@ -4,5 +4,6 @@ This is my professional portfolio. This uses AWS and ReactJS.
 
 # Tech Used
 
+Brew
 Git and Github
 SSH
