@@ -33,16 +33,16 @@ def lambda_handler(event, context):
         with zipfile.ZipFile(portfolio_zip) as myzip:
             for nm in myzip.namelist():
                 obj = myzip.open(nm)
-                portfolio_bucket.upload_fileobj(obj, nm, ExtraArgs={'ContentType': mimetypes.guess_type(nm)[0]})
+                portfolio_bucket.upload_fileobj(obj, nm, ExtraArgs={'ContentType': 'text/x-python'})
                 portfolio_bucket.Object(nm).Acl().put(ACL='public-read')
 
         print "Job done!"
-        topic.publish(Subject="Portfolio Deployed", Message="Portfolio deployed succesfully!")
+        topic.publish(Subject="Portfolio Deployed", Message="Portfolio deployed successfully!")
         if job:
             codepipeline = boto3.client('codepipeline')
             codepipeline.put_job_success_result(jobId=job['id'])
     except:
-        topic.publish(Subject="Portfolio Deploy Failed", Message="Portfolio WAS NOT deployed successfully!")
+        topic.publish(Subject="Portfolio Deploy Failed", Message="The Portfolio was not deployed successfully")
         raise
 
     return 'Hello from Lambda'
