@@ -2,8 +2,7 @@ import boto3
 from botocore.client import Config
 import StringIO
 import zipfile
-
-
+import mimetypes
 
 def lambda_handler(event, context):
     sns = boto3.resource('sns')
@@ -38,7 +37,7 @@ def lambda_handler(event, context):
                 portfolio_bucket.Object(nm).Acl().put(ACL='public-read')
 
         print "Job done!"
-        topic.publish(Subject="Portfolio Deploy Successful", Message="Portfolio deployed succesfully!")
+        topic.publish(Subject="Portfolio Deployed", Message="Portfolio deployed succesfully!")
         if job:
             codepipeline = boto3.client('codepipeline')
             codepipeline.put_job_success_result(jobId=job['id'])
